@@ -2261,3 +2261,42 @@ Increase the number of iterations (max_iter) or scale the data as shown in:
 2024-03-05 14:30:24,708:WARNING:c:\Users\nong9\AppData\Local\Programs\Python\Python310\lib\site-packages\sklearn\metrics\_regression.py:483: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
   warnings.warn(
 
+2024-03-05 14:39:22,374:INFO:Initializing create_model()
+2024-03-05 14:39:22,374:INFO:create_model(self=<pycaret.regression.oop.RegressionExperiment object at 0x00000192AFA6EC50>, estimator=br, fold=None, round=4, cross_validation=True, predict=True, fit_kwargs=None, groups=None, refit=True, probability_threshold=None, experiment_custom_tags=None, verbose=True, system=True, add_to_model_list=True, metrics=None, display=None, model_only=True, return_train_score=False, error_score=0.0, kwargs={})
+2024-03-05 14:39:22,374:INFO:Checking exceptions
+2024-03-05 14:39:22,384:INFO:Importing libraries
+2024-03-05 14:39:22,384:INFO:Copying training dataset
+2024-03-05 14:39:22,386:INFO:Defining folds
+2024-03-05 14:39:22,386:INFO:Declaring metric variables
+2024-03-05 14:39:22,388:INFO:Importing untrained model
+2024-03-05 14:39:22,390:INFO:Bayesian Ridge Imported successfully
+2024-03-05 14:39:22,394:INFO:Starting cross validation
+2024-03-05 14:39:22,394:INFO:Cross validating with KFold(n_splits=10, random_state=None, shuffle=False), n_jobs=-1
+2024-03-05 14:39:25,333:INFO:Calculating mean and std
+2024-03-05 14:39:25,335:INFO:Creating metrics dataframe
+2024-03-05 14:39:25,342:INFO:Finalizing model
+2024-03-05 14:39:25,353:INFO:Uploading results into container
+2024-03-05 14:39:25,354:INFO:Uploading model into container now
+2024-03-05 14:39:25,360:INFO:_master_model_container: 21
+2024-03-05 14:39:25,361:INFO:_display_container: 4
+2024-03-05 14:39:25,361:INFO:BayesianRidge()
+2024-03-05 14:39:25,361:INFO:create_model() successfully completed......................................
+2024-03-05 14:40:19,173:INFO:Initializing save_model()
+2024-03-05 14:40:19,173:INFO:save_model(model=BayesianRidge(), model_name=PM25_pipeline, prep_pipe_=Pipeline(memory=FastMemory(location=C:\Users\nong9\AppData\Local\Temp\joblib),
+         steps=[('numerical_imputer',
+                 TransformerWrapper(include=['CO', 'NO2', 'TEMP', 'RH'],
+                                    transformer=SimpleImputer())),
+                ('categorical_imputer',
+                 TransformerWrapper(include=[],
+                                    transformer=SimpleImputer(strategy='most_frequent')))]), verbose=True, use_case=MLUsecase.REGRESSION, kwargs={})
+2024-03-05 14:40:19,173:INFO:Adding model into prep_pipe
+2024-03-05 14:40:19,176:INFO:PM25_pipeline.pkl saved in current working directory
+2024-03-05 14:40:19,178:INFO:Pipeline(memory=Memory(location=None),
+         steps=[('numerical_imputer',
+                 TransformerWrapper(include=['CO', 'NO2', 'TEMP', 'RH'],
+                                    transformer=SimpleImputer())),
+                ('categorical_imputer',
+                 TransformerWrapper(include=[],
+                                    transformer=SimpleImputer(strategy='most_frequent'))),
+                ('trained_model', BayesianRidge())])
+2024-03-05 14:40:19,178:INFO:save_model() successfully completed......................................
