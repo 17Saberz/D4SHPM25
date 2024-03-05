@@ -28,8 +28,3 @@ df1["NO2"].replace(0, df1["NO2"].mean().round(2))
 
 print(pformat(df1))
 df1.to_csv('HKT_clean.csv', index=True)
-
-df1[['DATE','TIME']] = df1['DATETIMEDATA'].str.split(' ', expand=True)
-df_mean = df1.drop('DATETIMEDATA', axis=1)
-df_mean.groupby(['DATE'])
-df_mean.to_csv('mean.csv', index=True)
