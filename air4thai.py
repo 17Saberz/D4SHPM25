@@ -19,7 +19,7 @@ response_json = response.json()
 pd_from_dict = pd.DataFrame.from_dict(response_json["stations"][0]["data"])
 print(pformat(pd_from_dict))
 df = pd.DataFrame(pd_from_dict)
-column_null = ['PM25','CO','NO2','TEMP','RH','WD']
+column_null = ['PM25','CO','NO2','TEMP','RH']
 df1 = df[column_null] = df[column_null].fillna(df[column_null].mean().round(2))
 df1.insert(0, 'DATETIMEDATA', df['DATETIMEDATA'])
 condition = (df1[column_null] == 0).sum(axis=1) > 1
