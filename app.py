@@ -111,6 +111,7 @@ def update_charts(start_date, end_date):
                 "hovertemplate": "PM25%{y:.2f}<extra></extra>",
             },
         ],
+    
         "layout": {
             "title": {
                 "text": "PM25",  # Adjusted the chart title
