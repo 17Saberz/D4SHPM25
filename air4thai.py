@@ -71,3 +71,10 @@ df_train.loc[len(df_train) - 7, 'DAY7'] = float('nan')
 
 df_train.dropna(inplace=True)
 print(df_train)
+df_train.to_csv('Data1week.csv', index=True)
+
+df_train0 = df_train.iloc[0:901]
+df_train0.to_csv('1WeekTrain.csv', index=True)
+
+df_test = df_train.iloc[901:]
+df_test.to_csv('1WeekTest.csv', index=True)
