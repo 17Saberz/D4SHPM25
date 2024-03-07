@@ -49,4 +49,15 @@ for i in range(len(df_train) - 3):
     df_train.loc[i, 'DAY3'] = df_train.loc[i+3, 'PM25']
 df_train.loc[len(df_train) - 3, 'DAY3'] = float('nan')
 
+# Set data for predict next 4 day
+for i in range(len(df_train) - 4):
+    df_train.loc[i, 'DAY4'] = df_train.loc[i+4, 'PM25']
+df_train.loc[len(df_train) - 4, 'DAY4'] = float('nan')
+
+# Set data for predict next 5 day
+for i in range(len(df_train) - 5):
+    df_train.loc[i, 'DAY5'] = df_train.loc[i+5, 'PM25']
+df_train.loc[len(df_train) - 5, 'DAY5'] = float('nan')
+
+
 print(df_train)
