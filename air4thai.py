@@ -59,5 +59,15 @@ for i in range(len(df_train) - 5):
     df_train.loc[i, 'DAY5'] = df_train.loc[i+5, 'PM25']
 df_train.loc[len(df_train) - 5, 'DAY5'] = float('nan')
 
+# Set data for predict next 6 day
+for i in range(len(df_train) - 6):
+    df_train.loc[i, 'DAY6'] = df_train.loc[i+6, 'PM25']
+df_train.loc[len(df_train) - 6, 'DAY6'] = float('nan')
 
+# Set data for predict next 7 day
+for i in range(len(df_train) - 7):
+    df_train.loc[i, 'DAY7'] = df_train.loc[i+7, 'PM25']
+df_train.loc[len(df_train) - 7, 'DAY7'] = float('nan')
+
+df_train.dropna(inplace=True)
 print(df_train)
