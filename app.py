@@ -47,6 +47,7 @@ app.layout = html.Div(
                             options=[
                                 {"label": region, "value": region}
                                 for region in ['PM25','CO', 'NO2', 'TEMP', 'RH']
+                                for region in ['CO', 'NO2', 'TEMP', 'RH']
                             ],
                             value="CO",
                             clearable=False,
