@@ -3,7 +3,6 @@ from dash import dcc
 from dash import html
 import pandas as pd
 import numpy as np
-import plotly.express as px
 from dash.dependencies import Output, Input
 
 data = pd.read_csv("mean.csv")
@@ -47,7 +46,7 @@ app.layout = html.Div(
                             id="region-filter",
                             options=[
                                 {"label": region, "value": region}
-                                for region in ['CO', 'NO2', 'TEMP', 'RH']
+                                for region in ['PM25','CO', 'NO2', 'TEMP', 'RH']
                             ],
                             value="CO",
                             clearable=False,
@@ -73,36 +72,34 @@ app.layout = html.Div(
             ],
             className="menu",
         ),
-        html.Div( [
-        html.H2("กราฟแสดงผลการพยากรณ์ PM 2.5 อีก 1 สัปดาห์ข้างหน้า"),
-        dcc.Graph(
-            id='pm25-forecast-graph',
-            figure={
-                'data': [
-                    {'x': data.index, 'y': data['PM25'], 'type': 'line', 'name': 'PM 2.5'}
-                ],
-                'layout': {
-                    'title': 'การพยากรณ์ PM 2.5 อีก 1 สัปดาห์ข้างหน้า'
-                }
-            }
+        html.Div(
+            children=[
+                html.Div(
+                    children=dcc.Graph(
+                        id="price-chart", config={"displayModeBar": False},
+                    ),
+                    className="card",
+                ),
+                
+            ],
+            className="wrapper",
         ),
-    ]),
     ]
 )
 
 
 @app.callback(
-    [Output("price-chart", "figure")],
+    Output("price-chart", "figure"),
     [
-        Input("region-filter", "value"),
         Input("date-range", "start_date"),
         Input("date-range", "end_date"),
+        Input("region-filter", "value"),
     ],
 )
-def update_charts(region, start_date, end_date):
+def update_charts(start_date, end_date,region):
+    
     mask = (
-        (data.columns == region)
-        & (data.DATE >= start_date)
+        (data.DATE >= start_date)
         & (data.DATE <= end_date)
     )
     filtered_data = data.loc[mask, :]
@@ -110,35 +107,24 @@ def update_charts(region, start_date, end_date):
         "data": [
             {
                 "x": filtered_data["DATE"],
-                "y": filtered_data["PM25"],
+                "y": filtered_data[region], 
                 "type": "lines",
-                "hovertemplate": "$%{y:.2f}<extra></extra>",
+                "hovertemplate": "PM25%{y:.2f}<extra></extra>",
             },
         ],
         "layout": {
             "title": {
-                "text": "Average Price of Avocados",
+                "text": "PM25",  # Adjusted the chart title
                 "x": 0.05,
                 "xanchor": "left",
             },
             "xaxis": {"fixedrange": True},
-            "yaxis": {"tickprefix": "$", "fixedrange": True},
+            "yaxis": {"fixedrange": True},
             "colorway": ["#17B897"],
         },
     }
 
-    
     return price_chart_figure
-
-def update_pm25_graph(selected_date):
-    # นำเสนอกราฟ PM2.5 ตามวันที่ที่เลือก
-    # ในกรณีที่ใช้ Pycaret สามารถใช้ผลลัพธ์ที่ได้จากการพยากรณ์
-    # ดึงข้อมูล PM2.5 จากตัวแปรที่เก็บผลลัพธ์ของ Pycaret มาใช้
-    # ตัวอย่าง: pm25_data = pycaret_result.get_data('PM2.5')
-    # สร้างกราฟ pm25_data ด้วย Plotly Express
-    fig = px.line(x=..., y=..., title='PM 2.5 Forecast')
-    return fig
-
 
 if __name__ == "__main__":
     app.run_server(debug=True)
