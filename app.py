@@ -47,12 +47,8 @@ app.layout = html.Div(
                             options=[
                                 {"label": region, "value": region}
                                 for region in ['PM25','CO', 'NO2', 'TEMP', 'RH']
-<<<<<<< HEAD
-=======
-                                for region in ['CO', 'NO2', 'TEMP', 'RH']
->>>>>>> 9c4518b5a23b0da5f2220ab9d7221690f1e9eda1
                             ],
-                            value="CO",
+                            value="PM25",
                             clearable=False,
                             className="dropdown",
                         ),
@@ -100,11 +96,8 @@ app.layout = html.Div(
         Input("region-filter", "value"),
     ],
 )
-<<<<<<< HEAD
 def update_charts(start_date, end_date,region):
-=======
-def update_charts(start_date, end_date):
->>>>>>> 9c4518b5a23b0da5f2220ab9d7221690f1e9eda1
+
     
     mask = (
         (data.DATE >= start_date)
@@ -115,11 +108,8 @@ def update_charts(start_date, end_date):
         "data": [
             {
                 "x": filtered_data["DATE"],
-<<<<<<< HEAD
                 "y": filtered_data[region], 
-=======
-                "y": filtered_data["PM25"], 
->>>>>>> 9c4518b5a23b0da5f2220ab9d7221690f1e9eda1
+
                 "type": "lines",
                 "hovertemplate": "PM25%{y:.2f}<extra></extra>",
             },
