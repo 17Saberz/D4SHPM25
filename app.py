@@ -18,15 +18,15 @@ external_stylesheets = [
 ]
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
-app.title = "Avocado Analytics: Understand Your Avocados!"
+app.title = "PM2.5 Forecaster!"
 
 app.layout = html.Div(
     children=[
         html.Div(
             children=[
-                html.P(children="🥑", className="header-emoji"),
+                html.P(children="🫥", className="header-emoji"),
                 html.H1(
-                    children="Avocado Analytics", className="header-title"
+                    children="Air's Compnents", className="header-title"
                 ),
                 html.P(
                     children="Analyze the behavior of avocado prices"
@@ -47,6 +47,10 @@ app.layout = html.Div(
                             options=[
                                 {"label": region, "value": region}
                                 for region in ['PM25','CO', 'NO2', 'TEMP', 'RH']
+<<<<<<< HEAD
+=======
+                                for region in ['CO', 'NO2', 'TEMP', 'RH']
+>>>>>>> 9c4518b5a23b0da5f2220ab9d7221690f1e9eda1
                             ],
                             value="CO",
                             clearable=False,
@@ -96,7 +100,11 @@ app.layout = html.Div(
         Input("region-filter", "value"),
     ],
 )
+<<<<<<< HEAD
 def update_charts(start_date, end_date,region):
+=======
+def update_charts(start_date, end_date):
+>>>>>>> 9c4518b5a23b0da5f2220ab9d7221690f1e9eda1
     
     mask = (
         (data.DATE >= start_date)
@@ -107,7 +115,11 @@ def update_charts(start_date, end_date,region):
         "data": [
             {
                 "x": filtered_data["DATE"],
+<<<<<<< HEAD
                 "y": filtered_data[region], 
+=======
+                "y": filtered_data["PM25"], 
+>>>>>>> 9c4518b5a23b0da5f2220ab9d7221690f1e9eda1
                 "type": "lines",
                 "hovertemplate": "PM25%{y:.2f}<extra></extra>",
             },
