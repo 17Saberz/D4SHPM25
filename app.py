@@ -18,7 +18,7 @@ external_stylesheets = [
 ]
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
-app.title = "PM2.5 Forecaster!"
+app.title = "🫥PM2.5 Forecaster!"
 
 app.layout = html.Div(
     children=[
@@ -111,12 +111,12 @@ def update_charts(start_date, end_date,region):
                 "y": filtered_data[region], 
 
                 "type": "lines",
-                "hovertemplate": "PM25%{y:.2f}<extra></extra>",
+                "hovertemplate": "%{y:.2f}<extra></extra>",
             },
         ],
         "layout": {
             "title": {
-                "text": "PM25",  # Adjusted the chart title
+                "text": region,  # Adjusted the chart title
                 "x": 0.05,
                 "xanchor": "left",
             },
