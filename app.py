@@ -1,11 +1,9 @@
 from dash import Dash
 from dash import dcc
 from dash import html
-from dash import dash_table
-import pandas as pd
-import numpy as np
 from dash.dependencies import Output, Input
 from pycaret.regression import predict_model, load_model
+import pandas as pd
 
 data = pd.read_csv("HKT_clean.csv")
 data["DATETIMEDATA"] = pd.to_datetime(data["DATETIMEDATA"], format="%Y-%m-%d %H:%M:%S")
@@ -14,8 +12,6 @@ data.sort_values("DATETIMEDATA", inplace=True)
 df_mean = pd.read_csv("mean.csv")
 df_mean["DATE"] = pd.to_datetime(df_mean["DATE"], format="%Y-%m-%d")
 df_mean.sort_values("DATE", inplace=True)
-
-PAGE_SIZE = 5
 
 external_stylesheets = [
     {
@@ -35,8 +31,8 @@ navbar = html.Div(
             className="nav",
             children=[
                 html.A('Analysis', href='/'),
-                html.A('Prediction', href='/page-2'),
-                html.A('Table', href='/page-3')
+                html.A('PredictionPM25', href='/page-2'),
+                html.A('PredictionTEMP', href='/page-3')
             ]
         )
     ]
@@ -49,7 +45,7 @@ template_1 = html.Div(
             children=[
                 html.P(children="🫥", className="header-emoji"),
                 html.H1(
-                    children="Air Quality Metrics", className="header-title"
+                    children="Data", className="header-title"
                 ),
                 html.H2(
                     children="Analysis", className="header-second"
@@ -71,10 +67,10 @@ template_2 = html.Div(
             children=[
                 html.P(children="🫥", className="header-emoji"),
                 html.H1(
-                    children="Air Quality Metrics", className="header-title"
+                    children="PM25 PREDICT GRAPH", className="header-title"
                 ),
                 html.H2(
-                    children="Prediction ", className="header-second"
+                    children="PredictionPM25 ", className="header-second"
                 ),
                 html.P(
                     children=
@@ -93,10 +89,10 @@ template_3 = html.Div(
             children=[
                 html.P(children="🫥", className="header-emoji"),
                 html.H1(
-                    children="Air Quality Metrics", className="header-title"
+                    children="TEMP PREDICT GRAPH", className="header-title"
                 ),
                 html.H2(
-                    children="Table", className="header-second"
+                    children="PredictionTEMP", className="header-second"
                 ),
                 html.P(
                     children=
@@ -173,19 +169,17 @@ layout1 = html.Div(
 )
 
 
+
 @app.callback(
     Output("price-chart", "figure"), 
-     Output("volume-chart", "figure"),
+    Output("volume-chart", "figure"),
     [
         Input("date-range", "start_date"),
-        # Input("type-filter", "value"),
         Input("date-range", "end_date"),
         Input("region-filter", "value"),
     ],
 )
-def update_charts(start_date, end_date,region):
-
-    
+def update_charts(start_date, end_date, region):
     mask = ((data["DATETIMEDATA"] >= start_date) 
     & (data["DATETIMEDATA"] <= end_date))
     filtered_data = data.loc[mask, :]
@@ -235,7 +229,6 @@ def update_charts(start_date, end_date,region):
     }
     return price_chart_figure, mean_chart_figure
 
-
 layout2 = html.Div(
     children=[
         navbar,
@@ -248,12 +241,6 @@ layout2 = html.Div(
                     ),
                     className="card",
                 ),
-                html.Div(
-                    children=dcc.Graph(
-                        id="TEMP-chart", config={"displayModeBar": False},
-                    ),
-                    className="card",
-                ),
             ],
             className="wrapper",
         ),
@@ -261,19 +248,19 @@ layout2 = html.Div(
     ]
 )
 
+
+
 @app.callback(
     Output("PM25-chart", "figure"),
-    Output("TEMP-chart", "figure"),
     [
         Input('interval-component', 'n_intervals')
     ]
 )
-def update_chart_prediction(n_intervals):
+def update_chart_PredictionPM25(n_intervals):
     train = pd.read_csv('Train.csv')
     train['DATETIMEDATA'] = pd.to_datetime(train['DATETIMEDATA'])
 
     loaded_model_PM25 = load_model('PM25_pipeline\PM25_pipeline')
-    loaded_model_TEMP = load_model('TEMP_pipeline')
 
     now = pd.Timestamp.now()
     start_date = now.date()
@@ -290,16 +277,6 @@ def update_chart_prediction(n_intervals):
     predictions_PM25 = predictions_PM25.rename(columns={'Label': 'prediction_label'})
     predictions_PM25['prediction_label'] = predictions_PM25['prediction_label'].round(2)
 
-    future_dates_TEMP = pd.date_range(start=start_date, end=end_date, freq='D')
-    future_data_TEMP = pd.DataFrame({'DATETIMEDATA': future_dates_TEMP})
-    future_data_TEMP['PM25'] = train['TEMP'].mean().round(2)
-    future_data_TEMP['CO'] = train['CO'].mean().round(2)
-    future_data_TEMP['NO2'] = train['NO2'].mean().round(2)
-    future_data_TEMP['RH'] = train['PM25'].mean().round(2)
-
-    predictions_TEMP = predict_model(loaded_model_TEMP, data=future_data_TEMP)
-    predictions_TEMP = predictions_TEMP.rename(columns={'Label': 'prediction_label'})
-    predictions_TEMP['prediction_label'] = predictions_TEMP['prediction_label'].round(2)
 
     PM25_chart_figure = {
         "data": [
@@ -323,6 +300,59 @@ def update_chart_prediction(n_intervals):
         },
     }
 
+    return PM25_chart_figure 
+
+layout3 = html.Div(
+    children=[
+        navbar,
+        template_3,
+            html.Div(
+            children=[
+                html.Div(
+                    children=dcc.Graph(
+                        id="TEMP-chart", config={"displayModeBar": False},
+                    ),
+                    className="card",
+                ),
+            ],
+            className="wrapper",
+        ),
+        
+    ]
+)
+
+
+@app.callback(
+    
+    Output("TEMP-chart", "figure"),
+    [
+        Input('interval-component', 'n_intervals')
+    ]
+)
+def update_chart_PredictionPM25TEMP(n_intervals):
+    train = pd.read_csv('Train.csv')
+    train['DATETIMEDATA'] = pd.to_datetime(train['DATETIMEDATA'])
+
+    loaded_model_TEMP = load_model('TEMP_pipeline')
+
+    now = pd.Timestamp.now()
+    start_date = now.date()
+    end_date = start_date + pd.DateOffset(days=7)
+
+
+    future_dates_TEMP = pd.date_range(start=start_date, end=end_date, freq='D')
+    future_data_TEMP = pd.DataFrame({'DATETIMEDATA': future_dates_TEMP})
+    future_data_TEMP['PM25'] = train['TEMP'].mean().round(2)
+    future_data_TEMP['CO'] = train['CO'].mean().round(2)
+    future_data_TEMP['NO2'] = train['NO2'].mean().round(2)
+    future_data_TEMP['RH'] = train['PM25'].mean().round(2)
+
+    predictions_TEMP = predict_model(loaded_model_TEMP, data=future_data_TEMP)
+    predictions_TEMP = predictions_TEMP.rename(columns={'Label': 'prediction_label'})
+    predictions_TEMP['prediction_label'] = predictions_TEMP['prediction_label'].round(2)
+
+
+
     TEMP_chart_figure = {
     "data": [
         {
@@ -345,83 +375,8 @@ def update_chart_prediction(n_intervals):
     },
 }
 
-    return PM25_chart_figure , TEMP_chart_figure 
+    return TEMP_chart_figure 
 
-table_predict = pd.read_csv('Test.csv')
-table_predict = table_predict.drop(columns='Unnamed: 0')
-table_predict.rename(columns={'DATETIMEDATA': 'Date'}, inplace=True)
-
-table_analysis = pd.read_csv('mean.csv')
-table_analysis = table_analysis.drop(columns='Unnamed: 0')
-desired_order = ["PM25", "CO", "NO2", "TEMP", "RH","DATE","TIME"]
-table_analysis = table_analysis[desired_order]
-
-layout3 = html.Div(
-    children=[
-        navbar,
-        template_3,
-            html.Div(
-            children=[
-                html.Div(
-                    children=dash_table.DataTable(
-                        id="analysis",
-                        columns=[
-                            {"name": i, "id": i} for i in desired_order
-                                ],
-                        page_current=0,
-                        page_size=PAGE_SIZE,
-                        page_action='custom',
-                        style_cell={'textAlign': 'center'},
-                        style_cell_conditional=[
-                            {
-                                'if': {'column_id': c},
-                                'textAlign': 'center'
-                            } for c in ['DATE', 'Region']
-                        ],
-                        style_as_list_view=True,
-                    ),
-                    className="card",
-                ),
-                html.Div(
-                    children=dash_table.DataTable(
-                        id="prediction",
-                        columns=[
-                            {"name": i, "id": i} for i in ["DATE", "PM25","TEMP"]
-                                ],
-                        style_cell={'textAlign': 'center'},
-                        style_cell_conditional=[
-                            {
-                                'if': {'column_id': c},
-                                'textAlign': 'center'
-                            } for c in ['DATE', 'Region']
-                        ],
-                        style_as_list_view=True,
-                    ),
-                    className="card",
-                ),
-            ],
-            className="wrapper",
-        ),
-        
-    ]
-)
-
-@app.callback(
-    Output("analysis", "data"),
-    Output("prediction", "data"),
-    [
-        Input('analysis', "page_current"),
-        Input('analysis', "page_size"),
-    ]
-)
-def update_table(analysis_page_current, analysis_page_size):
-    analysis_data = (table_analysis[desired_order]
-                     .iloc[analysis_page_current * analysis_page_size: 
-                           (analysis_page_current + 1) * analysis_page_size]
-                            .to_dict('records'))
-    
-    prediction_data = table_predict.to_dict('records')
-    return analysis_data, prediction_data
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
