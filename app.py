@@ -32,7 +32,9 @@ navbar = html.Div(
             children=[
                 html.A('Analysis', href='/'),
                 html.A('PredictionPM25', href='/page-2'),
-                html.A('PredictionTEMP', href='/page-3')
+                html.A('PredictionTEMP', href='/page-3'),
+                html.A('GUS', href='/privacy'),
+                html.A('Naii', href='/terms')
             ]
         )
     ]
@@ -317,7 +319,6 @@ layout3 = html.Div(
             ],
             className="wrapper",
         ),
-        
     ]
 )
 
@@ -377,6 +378,42 @@ def update_chart_PredictionPM25TEMP(n_intervals):
 
     return TEMP_chart_figure 
 
+privacy_policy_content = """
+Privacy Policy Content Goes Here.
+"""
+
+terms_of_service_content = """
+Terms of Service Content Goes Here.
+"""
+
+privacy_policy_layout = html.Div(
+    children=[
+        navbar,
+        html.Div(
+            className="content",
+            children=[
+                html.H1("Privacy Policy"),
+                html.Div(privacy_policy_content)
+            ]
+        ),
+        
+    ]
+)
+
+terms_of_service_layout = html.Div(
+    children=[
+        navbar,
+        html.Div(
+            className="content",
+            children=[
+                html.H1("Terms of Service"),
+                html.Div(terms_of_service_content)
+            ]
+        ),
+        
+    ]
+)
+
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
@@ -393,6 +430,10 @@ def display_page(pathname):
         return layout2
     elif pathname == '/page-3':
         return layout3
+    elif pathname == '/privacy':
+        return privacy_policy_layout
+    elif pathname == '/terms':
+        return terms_of_service_layout
     else:
         return '404 Page Not Found'
 
