@@ -4,9 +4,15 @@ body {
     background-color: #F7F7F7;
 }
 
-.header {
-    background-color: #222222;
-    height: 288px;
+.header-one {
+    background-color: #B5C0D0;
+    height: 300px;
+    padding: 16px 0 0 0;
+}
+
+.header-two {
+    background-color: #B5C0D0;
+    height: 250px;
     padding: 16px 0 0 0;
 }
 
@@ -24,6 +30,14 @@ body {
     margin: 0 auto;
 }
 
+.header-second {
+    color: #F5E8DD;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0.70%;
+}
 .header-description {
     color: #CFCFCF;
     margin: 4px auto;
@@ -73,4 +87,76 @@ body {
     margin-bottom: 6px;
     font-weight: bold;
     color: #079A82;
+}
+
+.navbar {
+    background-color: #B5C0D0;
+    display: flex;
+    padding: 10px 20px;
+}
+
+.navbar .nav {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar .nav a {
+    color: rgb(0, 0, 0);
+    padding: 10px 15px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.navbar .nav a:hover {
+    background-color: #a2b4ce;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.CalendarDay__selected_span {
+    background: #dab3bb;
+    border: 1px double #ffffff;
+}
+
+.CalendarDay__selected, .CalendarDay__selected:active, .CalendarDay__selected:hover {
+    background: #EED3D9;
+    border: 1px double #dab3bb;
+    color: #fff;
+}
+
+.DayPickerKeyboardShortcuts_show__bottomRight::before {
+    border-top: 26px solid transparent;
+    border-right: 33px solid #b1c0d6;
+    bottom: 0;
+    right: 0;
+}
+
+.CalendarDay__selected_span:active, .CalendarDay__selected_span:hover {
+    background: #ffffff;
+    border: 1px double #fde977a1;
+    color: #000000;
+    background: #ffffff;
+    border: 1px double #fde977a1;
+    color: #000000;
+}
+
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner th {
+    background-color: #CCD3CA;
+}
+
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner table {
+    border-collapse: collapse;
+    font-family: "Lato", sans-serif;
+    font-size: 12.5px;
+    --accent: hotpink;
+    --border: lightgrey;
+    --text-color: #3c3c3c;
+    --hover: #fdfdfd;
+    --background-color-ellipses: #fdfdfd;
+    --faded-text: #fafafa;
+    --faded-text-header: #b4b4b4;
+    --selected-background: rgba(255, 65, 54, 0.2);
+    --faded-dropdown: #f0f0f0;
+    --muted: #c8c8c8;
 }
