@@ -1,1 +1,1 @@
-test gus
+Unzip file.zip before using
