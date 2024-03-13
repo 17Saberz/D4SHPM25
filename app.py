@@ -9,9 +9,9 @@ data = pd.read_csv("HKT_clean.csv")
 data["DATETIMEDATA"] = pd.to_datetime(data["DATETIMEDATA"], format="%Y-%m-%d %H:%M:%S")
 data.sort_values("DATETIMEDATA", inplace=True)
 
-df_mean = pd.read_csv("mean.csv")
-df_mean["DATE"] = pd.to_datetime(df_mean["DATE"], format="%Y-%m-%d")
-df_mean.sort_values("DATE", inplace=True)
+df_mean = pd.read_csv("mean_value.csv")
+df_mean["Date"] = pd.to_datetime(df_mean["Date"], format="%Y-%m-%d")
+df_mean.sort_values("Date", inplace=True)
 
 external_stylesheets = [
     {
@@ -33,8 +33,7 @@ navbar = html.Div(
                 html.A('Analysis', href='/'),
                 html.A('PredictionPM25', href='/page-2'),
                 html.A('PredictionTEMP', href='/page-3'),
-                html.A('GUS', href='/privacy'),
-                html.A('Naii', href='/terms')
+                html.A('Credit', href='/privacy'),
             ]
         )
     ]
@@ -45,18 +44,14 @@ template_1 = html.Div(
     children=[
         html.Div(
             children=[
-                html.P(children="🫥", className="header-emoji"),
+                html.P(children="🗿", className="header-emoji"),
                 html.H1(
                     children="Data", className="header-title"
                 ),
                 html.H2(
                     children="Analysis", className="header-second"
                 ),
-                html.P(
-                    children=
-"Exploring the Impact of Environmental Factors on Air Quality",
-                    className="header-description",
-                ),
+                
             ],
             className="header-one",
         ),
@@ -67,18 +62,14 @@ template_2 = html.Div(
     children=[
         html.Div(
             children=[
-                html.P(children="🫥", className="header-emoji"),
+                html.P(children="🗿", className="header-emoji"),
                 html.H1(
                     children="PM25 PREDICT GRAPH", className="header-title"
                 ),
                 html.H2(
                     children="PredictionPM25 ", className="header-second"
                 ),
-                html.P(
-                    children=
-"Exploring the Impact of Environmental Factors on Air Quality",
-                    className="header-description",
-                ),
+                
             ],
             className="header-two",
         ),
@@ -89,18 +80,14 @@ template_3 = html.Div(
     children=[
         html.Div(
             children=[
-                html.P(children="🫥", className="header-emoji"),
+                html.P(children="🗿", className="header-emoji"),
                 html.H1(
                     children="TEMP PREDICT GRAPH", className="header-title"
                 ),
                 html.H2(
                     children="PredictionTEMP", className="header-second"
                 ),
-                html.P(
-                    children=
-"Exploring the Impact of Environmental Factors on Air Quality",
-                    className="header-description",
-                ),
+                
             ],
             className="header-two",
         ),
@@ -115,7 +102,7 @@ layout1 = html.Div(
             children=[
                 html.Div(
                     children=[
-                        html.Div(children="Region", className="menu-title"),
+                        html.Div(children="Factor", className="menu-title"),
                         dcc.Dropdown(
                             id="region-filter",
                             options=[
@@ -206,13 +193,13 @@ def update_charts(start_date, end_date, region):
         },
     }
 
-    mask2 = ((df_mean['DATE'] >= start_date) 
-    & (df_mean['DATE'] <= end_date))
+    mask2 = ((df_mean['Date'] >= start_date) 
+    & (df_mean['Date'] <= end_date))
     filtered_data2 = df_mean.loc[mask2, :]
     mean_chart_figure = {
         "data": [
             {
-                "x": filtered_data2["DATE"],
+                "x": filtered_data2["Date"],
                 "y": filtered_data2[region],
                 "type": "lines",
                 "hovertemplate": "%{y:.2f}<extra></extra>",
@@ -378,41 +365,39 @@ def update_chart_PredictionPM25TEMP(n_intervals):
 
     return TEMP_chart_figure 
 
-privacy_policy_content = """
-Privacy Policy Content Goes Here.
-"""
 
-terms_of_service_content = """
-Terms of Service Content Goes Here.
-"""
+gus = html.Div([
+    html.H2('Gus'),
+    html.P('Peeranat Pathomkul'),
+    html.P('6610110214')
+    ])
+    
+naii = html.Div([    
+    html.H2('Naii'),
+    html.P('Jiramate Charoenkhwan'),
+    html.P('6610110043')
 
-privacy_policy_layout = html.Div(
+])
+personal_gus = html.Div(
     children=[
         navbar,
         html.Div(
             className="content",
             children=[
-                html.H1("Privacy Policy"),
-                html.Div(privacy_policy_content)
-            ]
+                html.P(children="🗿", className="header-emoji"),
+                html.H1(
+                    children="Personal Information", className="header-per"
+                        
+                ),
+                html.Div(children=gus, className="header-name"),
+                
+                html.Div(children=naii, className="header-name"),
+            ],
+            
         ),
-        
     ]
 )
 
-terms_of_service_layout = html.Div(
-    children=[
-        navbar,
-        html.Div(
-            className="content",
-            children=[
-                html.H1("Terms of Service"),
-                html.Div(terms_of_service_content)
-            ]
-        ),
-        
-    ]
-)
 
 
 app.layout = html.Div([
@@ -431,9 +416,7 @@ def display_page(pathname):
     elif pathname == '/page-3':
         return layout3
     elif pathname == '/privacy':
-        return privacy_policy_layout
-    elif pathname == '/terms':
-        return terms_of_service_layout
+        return personal_gus
     else:
         return '404 Page Not Found'
 
